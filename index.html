@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Medical Assistant</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="nav-logo">
+            <i class="fas fa-hand-holding-medical"></i>
+            <span>AI Medical</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-th-large"></i> Dashboard
+            </li>
+            <li class="nav-item" onclick="showSection('analysis')">
+                <i class="fas fa-microscope"></i> Image Analysis
+            </li>
+            <li class="nav-item" onclick="showSection('chat')">
+                <i class="fas fa-comment-medical"></i> AI Chatbot
+            </li>
+            <li class="nav-item" onclick="showSection('search')">
+                <i class="fas fa-users"></i> Patient Search
+            </li>
+        </ul>
+        <div class="sidebar-footer" style="padding: 20px; font-size: 12px; opacity: 0.6; text-align: center;">
+            &copy; 2024 Medical AI Tech
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <header>
+            <div class="header-title" id="section-title">Dashboard</div>
+            <div class="user-profile">
+                <span>Dr. Manus AI</span>
+                <div class="user-avatar">AI</div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="stats-grid" id="stats-container">
+                <div class="stat-card">
+                    <span class="stat-label">Total Patients</span>
+                    <span class="stat-value" id="stat-total">-</span>
+                    <i class="fas fa-users stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Average Age</span>
+                    <span class="stat-value" id="stat-age">-</span>
+                    <i class="fas fa-calendar-alt stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Active Consultations</span>
+                    <span class="stat-value">24</span>
+                    <i class="fas fa-stethoscope stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">AI Accuracy</span>
+                    <span class="stat-value">98.2%</span>
+                    <i class="fas fa-chart-line stat-icon"></i>
+                </div>
+            </div>
+
+            <div class="dashboard-row">
+                <div class="panel">
+                    <div class="panel-title"><i class="fas fa-notes-medical"></i> Medical Conditions Distribution</div>
+                    <div id="conditions-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        Loading data...
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title"><i class="fas fa-tint"></i> Blood Types</div>
+                    <div id="blood-types-list">
+                        Loading data...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Analysis Section -->
+        <section id="analysis" class="content-section">
+            <div class="analysis-container">
+                <div class="panel">
+                    <div class="panel-title"><i class="fas fa-upload"></i> Upload Medical Image</div>
+                    <form id="analysis-form">
+                        <div class="form-group">
+                            <label>Image Type</label>
+                            <select id="image_type" name="image_type" required>
+                                <option value="xray">X-ray Analysis</option>
+                                <option value="blood">Blood Cell Count</option>
+                            </select>
+                        </div>
+                        <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click or Drag image here to upload</p>
+                            <span id="file-name" style="display:block; margin-top:10px; font-weight:600; color:var(--primary);"></span>
+                            <img id="preview-img" src="#" alt="Preview">
+                        </div>
+                        <input type="file" id="file-input" name="file" hidden accept="image/*" onchange="previewFile()">
+                        
+                        <button type="submit" class="btn" id="analyze-btn">
+                            <span class="btn-text">Start AI Analysis</span>
+                            <div class="loader" id="analyze-loader"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <div id="analysis-result" class="result-box">
+                    <h3 class="panel-title" style="border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                        <i class="fas fa-clipboard-check"></i> Analysis Result
+                    </h3>
+                    <div id="result-content" class="mt-2">
+                        <!-- Result will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chatbot Section -->
+        <section id="chat" class="content-section">
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai">
+                        สวัสดีครับ ผมคือ AI ผู้ช่วยแพทย์ ยินดีให้คำปรึกษาเบื้องต้นเกี่ยวกับสุขภาพครับ มีอะไรให้ช่วยไหมครับ?
+                    </div>
+                </div>
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="พิมพ์ข้อความของคุณที่นี่..." autocomplete="off">
+                    <button type="submit" class="btn" id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Patient Search Section -->
+        <section id="search" class="content-section">
+            <div class="panel">
+                <div class="search-bar">
+                    <input type="text" id="search-query" placeholder="Enter patient name, condition, or blood type...">
+                    <select id="search-type">
+                        <option value="name">Name</option>
+                        <option value="condition">Medical Condition</option>
+                        <option value="blood_type">Blood Type</option>
+                    </select>
+                    <button class="btn" onclick="searchPatients()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table id="patient-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Blood Type</th>
+                                <th>Condition</th>
+                                <th>Doctor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patient-results">
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-search"></i>
+                                    Enter search criteria to find patients
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
